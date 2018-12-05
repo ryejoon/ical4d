@@ -1,4 +1,5 @@
 import 'package:ical4d/src/model/Parameter.dart';
+import 'package:time_machine/time_machine.dart';
 
 class Property {
   String name;
@@ -30,8 +31,12 @@ class Property {
 /**
  * DTSTART, DTEND, MODIFIED, EXDATE, RECURRENCE-ID etc..
  */
-class DateTimeProperty extends Property {
-  DateTime dt = DateTime.
+abstract class DateTimeProperty extends Property {
+  LocalDate localDate;
+  ZonedDateTime zdt;
+}
+
+class DtStart extends DateTimeProperty {
 
 }
 

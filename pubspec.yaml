@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   optional: ^3.0.0+2
+  time_machine: ^0.9.6
 
 dev_dependencies:
   test: ^1.0.0

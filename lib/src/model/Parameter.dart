@@ -1,31 +1,35 @@
 class Parameter {
-  String name;
-  String value;
+  String _name;
+  String _value;
 
-  @override
-  String toString() {
-    return 'Parameter{$name:$value}';
-  }
+  Parameter(this._name, this._value);
+
+  String get name => _name;
+
+  String get value => _value;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
           other is Parameter &&
               runtimeType == other.runtimeType &&
-              name == other.name &&
-              value == other.value;
+              _name == other._name &&
+              _value == other._value;
 
   @override
   int get hashCode =>
-      name.hashCode ^
-      value.hashCode;
+      _name.hashCode ^
+      _value.hashCode;
+
+  @override
+  String toString() {
+    return 'Parameter{_name: $_name, _value: $_value}';
+  }
 }
 
 class Value extends Parameter {
-  Value() {
-    name = "VALUE";
-  }
+  Value(String value) : super("VALUE", value) {}
 
-
+  static const DATE = const Value("DATE");
 
 }

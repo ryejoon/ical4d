@@ -2,38 +2,29 @@ import 'package:ical4d/src/model/Parameter.dart';
 import 'package:time_machine/time_machine.dart';
 
 class Property {
-  String name;
-  String value;
+  String _name;
+  String _value;
 
-  List<Parameter> parameters;
+  List<Parameter> _parameters = new List();
 
-  @override
-  String toString() {
-    return 'Property{$name:$value, parameters: $parameters}';
-  }
+  String get name => _name;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is Property &&
-              runtimeType == other.runtimeType &&
-              name == other.name &&
-              value == other.value &&
-              parameters == other.parameters;
+  String get value => _value;
 
-  @override
-  int get hashCode =>
-      name.hashCode ^
-      value.hashCode ^
-      parameters.hashCode;
+  List<Parameter> get parameters => _parameters;
+
 }
 
 /**
  * DTSTART, DTEND, MODIFIED, EXDATE, RECURRENCE-ID etc..
  */
 abstract class DateTimeProperty extends Property {
-  LocalDate localDate;
-  ZonedDateTime zdt;
+  LocalDate _localDate;
+  ZonedDateTime _zonedDateTime;
+
+  DateTimeProperty(Parameter valueParameter, String value) {
+
+  }
 }
 
 class DtStart extends DateTimeProperty {

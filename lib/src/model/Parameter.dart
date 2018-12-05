@@ -30,6 +30,4 @@ class Parameter {
 class Value extends Parameter {
   Value(String value) : super("VALUE", value) {}
 
-  static const DATE = const Value("DATE");
-
 }

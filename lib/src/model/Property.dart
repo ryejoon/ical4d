@@ -21,6 +21,10 @@ class Property {
     return Optional.ofNullable(_parameters.where((p) => p.name == parameterName).first).map((p) => p.value);
   }
 
+  @override
+  String toString() {
+    return 'Property{$_name:$_value, _parameters: $_parameters}';
+  }
 }
 
 /**
@@ -54,6 +58,8 @@ abstract class DateTimeProperty extends Property {
 
 class DtStart extends DateTimeProperty {
   DtStart(Property property) : super(property);
+
+
 
 }
 

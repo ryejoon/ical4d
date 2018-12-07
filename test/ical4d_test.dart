@@ -17,19 +17,30 @@ void main() {
       Parameter tzid = new Parameter("TZID", "Asia/Seoul");
       expect(tzid.toICalendarString(), equals("TZID=Asia/Seoul"));
 
-      Property prop = new Property("DTSTART", "20150101T000000", [tzid]);
+      DateTimeZone timeZone = new Utils().getTimeZone(tzid.value);
+      var zonedDateTime = new ZonedDateTime.atLeniently(LocalDateTime(2015, 1, 1, 0, 0, 0), timeZone);
+
+      Property prop = new Property("DTSTART", zonedDateTime.toString("yyyyMMdd'T'HHmmss"), [tzid]);
       expect(prop.toICalendarString(), equals("DTSTART;TZID=Asia/Seoul:20150101T000000"));
 
       DtStart dtStart = DtStart(prop);
-      //expect(dtStart, is)
+      expect(dtStart.localDate, isNull);
+      expect(dtStart.zonedDateTime, equals(zonedDateTime));
+      expect(prop.toICalendarString(), equals("DTSTART;TZID=Asia/Seoul:20150101T000000"));
     });
 
     test('VALUE=DATE Date Property Test', () {
+      LocalDate localDate = LocalDate(2015, 1, 1);
       Parameter value = new Parameter("VALUE", "DATE");
       expect(value.toICalendarString(), equals("VALUE=DATE"));
 
-      Property prop = new Property("DTSTART", "20150101", [value]);
+      Property prop = new Property("DTSTART", localDate.toString("yyyyMMdd"), [value]);
       expect(prop.toICalendarString(), equals("DTSTART;VALUE=DATE:20150101"));
+
+      DtStart dtStart = DtStart(prop);
+      expect(dtStart.localDate, equals(localDate));
+      expect(dtStart.zonedDateTime, isNull);
+      expect(dtStart.toICalendarString(), equals("DTSTART;VALUE=DATE:20150101"));
     });
   });
 }

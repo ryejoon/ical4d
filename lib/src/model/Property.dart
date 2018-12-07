@@ -34,6 +34,13 @@ class Property {
   String toString() {
     return 'Property{$_name:$_value, _parameters: $_parameters}';
   }
+
+  void addParameter(Parameter param) {
+    parameters.add(param);
+  }
+
+  void removeParameterWhere(bool predicate(Parameter param)) => predicate.
+
 }
 
 /**
@@ -51,10 +58,8 @@ abstract class DateTimeProperty extends Property {
         return;
       case "DATE-TIME":
       default:
-        var tzid = dateTimeProperty.getFirstParamValue("TZID").orElse("UTC");
-        var tz = new Utils().getTimeZone(tzid);
-        _zonedDateTime = ZonedDateTimePattern.createWithCurrentCulture("yyyyMMdd'T'HHmmss")
-            .parse(dateTimeProperty.value).value.withZone(tz);
+        var tz = new Utils().getTimeZone(dateTimeProperty.getFirstParamValue("TZID").orElse("UTC"));
+        _zonedDateTime = LocalDateTimePattern.createWithInvariantCulture("yyyyMMdd'T'HHmmss").parse(dateTimeProperty.value).value.inZoneLeniently(tz);
     }
   }
 
@@ -62,14 +67,17 @@ abstract class DateTimeProperty extends Property {
 
   LocalDate get localDate => _localDate;
 
-
+  bool isLocal() {
+    return localDate != null;
+  }
 }
 
 class DtStart extends DateTimeProperty {
   DtStart(Property property) : super(property);
+}
 
-
-
+class DtEnd extends DateTimeProperty {
+  DtEnd(Property property) : super(property);
 }
 
 class Utils {

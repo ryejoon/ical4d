@@ -3,6 +3,9 @@ import 'package:optional/optional.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text_patterns.dart';
 
+
+//typedef Predicate<E> = bool Function(E element);
+
 class Property {
   String _name;
   String _value;
@@ -39,8 +42,9 @@ class Property {
     parameters.add(param);
   }
 
-  void removeParameterWhere(bool predicate(Parameter param)) => predicate.
-
+  void removeParameterWhere(bool cond(Parameter element)) {
+    parameters.removeWhere(cond);
+  }
 }
 
 /**

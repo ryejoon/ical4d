@@ -42,5 +42,15 @@ void main() {
       expect(dtStart.zonedDateTime, isNull);
       expect(dtStart.toICalendarString(), equals("DTSTART;VALUE=DATE:20150101"));
     });
+
+    test('Parameter Delete', () {
+      LocalDate localDate = LocalDate(2015, 1, 1);
+      Parameter value = new Parameter("VALUE", "DATE");
+      Property prop = new Property("DTSTART", localDate.toString("yyyyMMdd"), [value]);
+      expect(prop.toICalendarString(), equals("DTSTART;VALUE=DATE:20150101"));
+
+      prop.removeParameterWhere((p) => p.value.contains("DATE"));
+      expect(prop.toICalendarString(), equals("DTSTART:20150101"));
+    });
   });
 }

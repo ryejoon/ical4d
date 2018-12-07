@@ -1,8 +1,10 @@
+import 'dart:collection';
+
 import 'package:ical4d/src/model/Property.dart';
 import 'package:optional/optional.dart';
 
 class Component {
-  Map<String, List<Property>> properties;
+  Map<String, List<Property>> properties = HashMap();
 
   Optional<List<Property>> getProperties(String name) {
     return Optional.ofNullable(properties[name]);
@@ -18,10 +20,17 @@ class Component {
     return getFirstProperty(name).map((p) => p.value).orElse(null);
   }
 
+  void addProperty(Property property) {
+    properties.update(property.value, (l) => {
+        l.add(property);
+        return l;
+  }, ifAbsent: () => [property]);
+  }
+
 }
 
 class CalendarComponent extends Component {
-  List<VAlarm> alarms;
+  List<VAlarm> alarms = List();
 }
 
 class VEvent extends CalendarComponent {

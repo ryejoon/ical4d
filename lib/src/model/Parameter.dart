@@ -21,6 +21,10 @@ class Parameter {
       _name.hashCode ^
       _value.hashCode;
 
+  String toICalendarString() {
+    return '$_name=$_value';
+  }
+
   @override
   String toString() {
     return 'Parameter{_name: $_name, _value: $_value}';

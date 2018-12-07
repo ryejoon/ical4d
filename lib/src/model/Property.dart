@@ -21,6 +21,15 @@ class Property {
     return Optional.ofNullable(_parameters.where((p) => p.name == parameterName).first).map((p) => p.value);
   }
 
+  toICalendarString() {
+    if (parameters.isEmpty) {
+      return '$_name:$_value';
+    } else {
+      String params = _parameters.map((p) => p.toICalendarString()).join(";");
+      return '$_name;$params:$_value';
+    }
+  }
+
   @override
   String toString() {
     return 'Property{$_name:$_value, _parameters: $_parameters}';

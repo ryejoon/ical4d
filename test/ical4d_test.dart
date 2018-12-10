@@ -23,7 +23,7 @@ void main() {
       Property prop = new Property("DTSTART", zonedDateTime.toString("yyyyMMdd'T'HHmmss"), [tzid]);
       expect(prop.toICalendarString(), equals("DTSTART;TZID=Asia/Seoul:20150101T000000"));
 
-      DtStart dtStart = DtStart(prop);
+      DtStart dtStart = DtStart(prop.name, prop.value, prop.parameters);
       expect(dtStart.localDate, isNull);
       expect(dtStart.zonedDateTime, equals(zonedDateTime));
       expect(prop.toICalendarString(), equals("DTSTART;TZID=Asia/Seoul:20150101T000000"));
@@ -37,7 +37,7 @@ void main() {
       Property prop = new Property("DTSTART", localDate.toString("yyyyMMdd"), [value]);
       expect(prop.toICalendarString(), equals("DTSTART;VALUE=DATE:20150101"));
 
-      DtStart dtStart = DtStart(prop);
+      DtStart dtStart = DtStart(prop.name, prop.value, prop.parameters);
       expect(dtStart.localDate, equals(localDate));
       expect(dtStart.zonedDateTime, isNull);
       expect(dtStart.toICalendarString(), equals("DTSTART;VALUE=DATE:20150101"));

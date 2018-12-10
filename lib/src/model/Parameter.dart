@@ -29,6 +29,18 @@ class Parameter {
   String toString() {
     return 'Parameter{_name: $_name, _value: $_value}';
   }
+
+  /**
+   * parameter values can be escaped by surrounding the value in double-quotes. Parameter values must be escaped if they contain any of the following characters:
+      ; - semicolon
+      : - colon
+      , - comma
+
+      Property parameter values MUST NOT contain the DQUOTE character. The DQUOTE character is used as a delimiter for parameter values that contain restricted characters or URI text.
+   */
+  static Parameter fromICalendarString(String iCalendarString) {
+
+  }
 }
 
 class Value extends Parameter {

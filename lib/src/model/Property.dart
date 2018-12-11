@@ -50,13 +50,13 @@ class Property {
 
     switch(propertyName) {
       case "DTSTART" :
-        return new DtStart(propertyName, propertyValue, parameters);
+        return new DtStart(propertyValue, parameters);
       case "DTEND" :
-        return new DtEnd(propertyName, propertyValue, parameters);
+        return new DtEnd(propertyValue, parameters);
       case "EXDATE" :
-        return new ExDate(propertyName, propertyValue, parameters);
+        return new ExDate(propertyValue, parameters);
       case "RECURRENCE-ID" :
-        return new RecurrenceId(propertyName, propertyValue, parameters);
+        return new RecurrenceId(propertyValue, parameters);
       default :
         return new Property(propertyName, propertyValue, parameters);
     }
@@ -116,19 +116,24 @@ abstract class DateTimeProperty extends Property {
 }
 
 class DtStart extends DateTimeProperty {
-  DtStart(String name, String value, List<Parameter> parameters) : super(name, value, parameters);
+  DtStart(String value, List<Parameter> parameters) : super("DTSTART", value, parameters);
 }
 
 class DtEnd extends DateTimeProperty {
-  DtEnd(String name, String value, List<Parameter> parameters) : super(name, value, parameters);
+  DtEnd(String value, List<Parameter> parameters) : super("DTEND", value, parameters);
 }
 
 class ExDate extends DateTimeProperty {
-  ExDate(String name, String value, List<Parameter> parameters) : super(name, value, parameters);
+  ExDate(String value, List<Parameter> parameters) : super("EXDATE", value, parameters);
 }
 
 class RecurrenceId extends DateTimeProperty {
-  RecurrenceId(String name, String value, List<Parameter> parameters) : super(name, value, parameters);
+  RecurrenceId(String value, List<Parameter> parameters) : super("RECURRENCE-ID", value, parameters);
+}
+
+class Rrule extends Property {
+  Rrule(String value) : super("RRULE", value);
+
 }
 
 class Utils {

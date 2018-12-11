@@ -104,6 +104,18 @@ class VEvent extends CalendarComponent {
     return getFirstProperty("DTSTART");
   }
 
+  DtEnd getDtEnd() {
+    return getFirstProperty("DTEND");
+  }
+
+  RecurrenceId getRecurrenceId() {
+    return getFirstProperty("RECURRENCE-ID");
+  }
+
+  List<ExDate> getExDates() {
+    return getProperties("EXDATE");
+  }
+
 
   VEvent.fromICalendarString(List<String> lines): super.fromICalendarString(lines);
 

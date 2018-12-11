@@ -27,24 +27,18 @@ class VCalendar extends Component {
   }
 
   Component buildComponent(List<String> lines) {
-    Component comp;
      switch(lines.first.split(":")[1]) {
        case "VEVENT" :
-         comp = VEvent.fromICalendarString(lines);
-         break;
+         return VEvent.fromICalendarString(lines);
        case "VTODO" :
-         comp = VTodo.fromICalendarString(lines);
-         break;
+         return VTodo.fromICalendarString(lines);
        case "VTIMEZONE":
-         comp = VTimeZone.fromICalendarString(lines);
-         break;
+         return VTimeZone.fromICalendarString(lines);
        case "VALARM":
-         comp = VAlarm.fromICalendarString(lines);
-         break;
+         return VAlarm.fromICalendarString(lines);
        default :
-         comp = Component.fromICalendarString(lines);
+         return Component.fromICalendarString(lines);
      }
-    return comp;
   }
 
   @override

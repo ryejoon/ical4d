@@ -21,9 +21,7 @@ class Parameter {
       _name.hashCode ^
       _value.hashCode;
 
-  String toICalendarString() {
-    return '$_name=$_value';
-  }
+  static const List<String> VALUE_ESCAPE_CHARS = [";", ":", ","];
 
   @override
   String toString() {
@@ -38,8 +36,18 @@ class Parameter {
 
       Property parameter values MUST NOT contain the DQUOTE character. The DQUOTE character is used as a delimiter for parameter values that contain restricted characters or URI text.
    */
-  static Parameter fromICalendarString(String iCalendarString) {
+  static Parameter fromICalendarString(String parameterString) {
+    var colonIndex = parameterString.indexOf("=");
+    String name = parameterString.substring(0, colonIndex);
+    String value = parameterString.substring(colonIndex + 1);
+    return new Parameter(name, value);
+  }
 
+  String toICalendarString() {
+    if (VALUE_ESCAPE_CHARS.any((ec) => value.contains(ec))) {
+      return '$_name="$_value"';
+    }
+    return '$_name=$_value';
   }
 }
 

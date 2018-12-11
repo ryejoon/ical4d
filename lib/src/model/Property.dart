@@ -21,7 +21,7 @@ class Property {
   List<Parameter> get parameters => _parameters;
 
   void appendValue(String newLine) {
-    _value = _value + newLine;
+    _value = _value + _parseValue(newLine);
   }
 
   Optional<String> getFirstParamValue(String parameterName) {
@@ -30,11 +30,20 @@ class Property {
 
   toICalendarString() {
     if (parameters.isEmpty) {
-      return '$_name:$_value';
+      return '$_name:' + _writeValue();
     } else {
       String params = _parameters.map((p) => p.toICalendarString()).join(";");
-      return '$_name;$params:$_value';
+      return '$_name;$params:' + _writeValue();
     }
+  }
+
+
+  static String _parseValue(String rawICalendarValue) {
+    return rawICalendarValue.replaceAll("\\n", "\n").replaceAll("\\,", ",");
+  }
+
+  String _writeValue() {
+    return value.replaceAll("\n", "\\n").replaceAll(",", "\\,");
   }
 
   static Property fromICalendarString(String icalendarLine) {
@@ -42,7 +51,7 @@ class Property {
     if (firstColonIndex == -1) {
       throw new Exception(icalendarLine);
     }
-    String propertyValue = icalendarLine.substring(firstColonIndex + 1);
+    String propertyValue = _parseValue(icalendarLine.substring(firstColonIndex + 1));
     List<String> paramTokens = icalendarLine.substring(0, firstColonIndex).split(";");
     String propertyName = paramTokens[0];
 
@@ -91,7 +100,7 @@ abstract class DateTimeProperty extends Property {
     var valueParameterValue = parameters.firstWhere((p) => p.name == "VALUE", orElse: () => Parameter("", "DATE-TIME")).value;
     switch (valueParameterValue) {
       case "DATE" :
-        _localDate = LocalDatePattern.createWithCurrentCulture("yyyyMMdd").parse(value).value;
+        _localDate = LocalDatePattern.createWithInvariantCulture("yyyyMMdd").parse(value).value;
         return;
       case "DATE-TIME":
       default:

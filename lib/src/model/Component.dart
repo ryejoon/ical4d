@@ -100,6 +100,10 @@ class VEvent extends CalendarComponent {
     return getFirstPropertyValue("UID");
   }
 
+  String getDescription() {
+    return getFirstPropertyValue("DESCRIPTION");
+  }
+
   DtStart getDtStart() {
     return getFirstProperty("DTSTART");
   }

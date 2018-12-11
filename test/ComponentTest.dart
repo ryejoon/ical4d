@@ -17,8 +17,7 @@ void main() {
     test('Component Property Test', () {
       VEvent ev = new VEvent();
       ev.addProperty(new Property("DTSTART", "20110101", [new Value("DATE")]));
-
-      print(ev.toICalendarString());
+      expect(ev.toICalendarString(), equals("BEGIN:VEVENT\nDTSTART;VALUE=DATE:20110101\nEND:VEVENT"));
     });
   });
 }

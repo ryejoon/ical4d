@@ -9,22 +9,23 @@ class Component {
 
   Component(this.name);
 
-  Optional<List<Property>> getProperties(String name) {
-    return Optional.ofNullable(properties[name]);
+  List<Property> getProperties(String name) {
+    return properties[name];
   }
 
-  Optional<Property> getFirstProperty(String name) {
-    return getProperties(name).flatMap((pl) =>
-    (pl.isEmpty) ? Optional.empty() : Optional.of(pl.first)
-    );
+  Property getFirstProperty(String name) {
+    var mapper = (l) => l.first;
+    return Optional.ofNullable(getProperties(name))
+        .map(mapper).orElse(null);
   }
 
   String getFirstPropertyValue(String name) {
-    return getFirstProperty(name).map((p) => p.value).orElse(null);
+    var p = getFirstProperty(name);
+    return (p == null) ? null : p.value;
   }
 
   void addProperty(Property property) {
-    properties.update(property.value, (List<Property> l) {
+    properties.update(property.name, (List<Property> l) {
         l.add(property);
         return l;
   }, ifAbsent: () => [property]);
@@ -84,6 +85,8 @@ class CalendarComponent extends Component {
   List<VAlarm> alarms = List();
 
   CalendarComponent(String name) : super(name);
+
+  CalendarComponent.fromICalendarString(List<String> lines): super.fromICalendarString(lines);
 }
 
 class VEvent extends CalendarComponent {
@@ -97,23 +100,30 @@ class VEvent extends CalendarComponent {
     return getFirstPropertyValue("UID");
   }
 
-  DateTime getDtStart() {
-
+  DtStart getDtStart() {
+    return getFirstProperty("DTSTART");
   }
+
+
+  VEvent.fromICalendarString(List<String> lines): super.fromICalendarString(lines);
 
 }
 
 class VTodo extends CalendarComponent {
   VTodo() : super("VTODO");
 
+  VTodo.fromICalendarString(List<String> lines): super.fromICalendarString(lines);
+
 }
 
 class VAlarm extends Component {
   VAlarm() : super("VALARM");
 
+  VAlarm.fromICalendarString(List<String> lines): super.fromICalendarString(lines);
 }
 
 class VTimeZone extends Component {
   VTimeZone() : super("VTIMEZONE");
 
+  VTimeZone.fromICalendarString(List<String> lines): super.fromICalendarString(lines);
 }

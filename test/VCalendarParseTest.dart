@@ -36,9 +36,9 @@ END:VEVENT
 END:VCALENDAR""";
       var split = stringValue.split("\n");
       VCalendar vcal = new VCalendar.fromICalendarString(split);
-      
-      print(vcal.toICalendarString());
-      print(vcal.toString());
+
+      var firstEvent = vcal.getFirstEvent();
+      expect(firstEvent.map((ev) => ev.getDtStart()).value.toICalendarString(), equals("DTSTART:19960918T143000Z"));
 
     });
   });

@@ -1,4 +1,5 @@
 import 'package:ical4d/src/model/Component.dart';
+import 'package:optional/optional.dart';
 
 class VCalendar extends Component {
   VCalendar() : super("VCALENDAR");
@@ -11,14 +12,39 @@ class VCalendar extends Component {
   }
 
   VCalendar.fromICalendarString(List<String> lines):super.fromICalendarString(lines);
+  
+  Optional<VEvent> getFirstEvent() {
+    return Optional.ofNullable(_components.firstWhere((c) => c is VEvent, orElse: null));
+  }
 
   @override
   void parseSubComponent(List<String> lines) {
     try {
-      _components.add(Component.fromICalendarString(lines));
+       _components.add(buildComponent(lines));
     } catch (e) {
       throw new Exception(e.toString() + ", component lines : " + lines.toString());
     }
+  }
+
+  Component buildComponent(List<String> lines) {
+    Component comp;
+     switch(lines.first.split(":")[1]) {
+       case "VEVENT" :
+         comp = VEvent.fromICalendarString(lines);
+         break;
+       case "VTODO" :
+         comp = VTodo.fromICalendarString(lines);
+         break;
+       case "VTIMEZONE":
+         comp = VTimeZone.fromICalendarString(lines);
+         break;
+       case "VALARM":
+         comp = VAlarm.fromICalendarString(lines);
+         break;
+       default :
+         comp = Component.fromICalendarString(lines);
+     }
+    return comp;
   }
 
   @override
